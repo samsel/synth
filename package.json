@@ -1,0 +1,32 @@
+{
+  "name": "synth",
+  "main": "client/index.html",
+  "version": "0.0.1",
+  "description": "A Synthesizer Prototype in Javascript",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/samsel/synth.git"
+  },
+  "author": "Sam Selvanathan",
+  "license": "BSD",
+  "dependencies": {
+    "node-hid" : "*",
+    "ws": "*"
+  },
+  "window": {
+    "title": "node-webkit demo",
+    "icon": "link.png",
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 500,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 800,
+    "max_height": 600
+  }, 
+  "webkit": {
+    "plugin": true
+  }
+}
