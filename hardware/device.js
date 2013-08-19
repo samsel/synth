@@ -1,5 +1,14 @@
+/*
+ * Emits events for data/error
+ * received from the HID device
+ *
+ * Events Emitted:
+ *		error
+ *		data
+ */
+
 var Device,
-	Readable = require('stream').Readable,
+	events = require('events'),
 	util = require('util'),
 	hid = require('./hid');
 
@@ -7,25 +16,21 @@ var Device,
 module.exports = Device = function(name) {
 	
 	var device = hid.find(name),
-		errorCB = function(err) {
-			console.dir(err);
-		},
 		parser;
 
-	Readable.call(this);
-	this.on('error', errorCB);
+	events.EventEmitter.call(this);
 
 	parser = function(err, data) {
-		if(err) errorCB(err);
+		if(err) this.emit("error", err);
 
 		this.emit("data", data);
 		device.read(parser);
 	};
 
-	parser = parser.bind(this)
+	parser = parser.bind(this);
 	device.read(parser);
 
 	return this;
 };
 
-util.inherits(Device, Readable);
+util.inherits(Device, events.EventEmitter);
