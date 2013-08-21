@@ -1,17 +1,19 @@
 var hardware = require('../hardware'),
+	format = require('./format'),
 	WebSocket = require('ws'),
+	midi = require('./midi'),
 	server;
-
 
 server = new WebSocket.Server({port: 8080});
 
 server.on('connection', function(ws) {
 
     ws.on('message', function(message) {
-        console.log('received: %s', message);
+        midi.process(message);
     });
 
 	hardware.on("data", function(data) {
-		ws.send(JSON.stringify(data.splice(1,2)));
+		ws.send(JSON.stringify(format(data)));
 	});    
 });
+

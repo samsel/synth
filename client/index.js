@@ -7,19 +7,19 @@
 		Socket;
 
 	NOTES = {
-		"C3"  : 130.813,
-		"C#3" : 138.591,
-		"D3"  : 146.832,
-		"D#3" : 155.563,
-		"E3"  : 164.814,
-		"F3"  : 174.614,
-		"F#3" : 184.997,
-		"G3"  : 195.998,
-		"G#3" : 207.652,
-		"A3"  : 220,
-		"A#3" : 233.082,
-		"B3"  : 246.942,
-		"C4"  : 261.626
+		"C3"  : 48,
+		"C#3" : 49,
+		"D3"  : 50,
+		"D#3" : 51,
+		"E3"  : 52,
+		"F3"  : 53,
+		"F#3" : 54,
+		"G3"  : 55,
+		"G#3" : 56,
+		"A3"  : 57,
+		"A#3" : 58,
+		"B3"  : 59,
+		"C4"  : 60
 	};	
 
 	UI = (function UI() {
@@ -43,26 +43,30 @@
 			$('.scope').append(noteString);
 		}
 
-		function move(coords) {
-			//console.log(coords);
-
-			if(coords[0] > 0 && coords[0] < 100) {
-				var left = $circle.position().left + coords[0];
-				if(left < scope.width()) {
-					circleStyle.webkitTransform = 'translateX(' + left + 'px)';
-				}				
+		function move(data) {
+			var left;
+			if(data.x > 0 && data.x < 100) {
+				left = $circle.position().left + data.x;				
 			}
 			else {
-				var left = $circle.position().left - (255 - coords[0]);
-				if(left > 0) {
-					circleStyle.webkitTransform = 'translateX(' + left + 'px)';
-				}				
+				left = $circle.position().left - (255 - data.x);		
 			}
+			if(left && left > 0 && left < scope.width()) {
+				circleStyle.webkitTransform = 'translateX(' + left + 'px)';
+			}
+		}
+
+		function clicked(data) {
+			console.log(data.type);
+		}
+
+		function process(data) {
+			data.click ? clicked(data) : move(data)
 		}		
 		
 		return {
 			init: init,
-			move: move
+			process: process
 		};
 	})();
 
@@ -72,11 +76,11 @@
 		var socket;
 
 		function onopen() {
-			socket.send("Message to send");
+			socket.send(63);
 		}
 
 		function onmessage(e) {
-			UI.move(JSON.parse(e.data));
+			UI.process(JSON.parse(e.data));
 		}
 
 		function onclose() {

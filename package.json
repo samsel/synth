@@ -11,7 +11,9 @@
   "license": "BSD",
   "dependencies": {
     "node-hid" : "*",
-    "ws": "*"
+    "ws": "*",
+    "coremidi": "*",
+    "midi-api" : "*"
   },
   "window": {
     "title": "node-webkit demo",
