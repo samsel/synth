@@ -8,7 +8,6 @@
     "url": "git://github.com/samsel/synth.git"
   },
   "author": "Sam Selvanathan",
-  "license": "BSD",
   "dependencies": {
     "node-hid" : "*",
     "ws": "*",
@@ -16,11 +15,11 @@
     "midi-api" : "*"
   },
   "window": {
-    "title": "node-webkit demo",
+    "title": "synth",
     "icon": "link.png",
     "toolbar": false,
     "frame": true,
-    "width": 800,
+    "width": 900,
     "height": 500,
     "position": "mouse",
     "min_width": 400,

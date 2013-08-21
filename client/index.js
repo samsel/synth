@@ -4,7 +4,8 @@
 
 	var UI,
 		NOTES,
-		Socket;
+		Socket,
+		System;
 
 	NOTES = {
 		"C3"  : 48,
@@ -130,7 +131,15 @@
 	})();
 
 
+	System = {
+		start: function() {
+			// var server = require('../server');
+			// server.boot();
+		}
+	};
+
 	$(function() {
+		System.start();
 		UI.init();
 		Socket.listen();
 	});

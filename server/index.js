@@ -4,6 +4,7 @@ var hardware = require('../hardware'),
 	midi = require('./midi'),
 	server;
 
+
 server = new WebSocket.Server({port: 8080});
 
 server.on('connection', function(ws) {
@@ -16,4 +17,3 @@ server.on('connection', function(ws) {
 		ws.send(JSON.stringify(format(data)));
 	});    
 });
-
