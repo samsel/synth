@@ -26,19 +26,27 @@
 
 		var circleStyle,
 			$circle,
-			scope;
+			scope,
+			note,
+			noteWidth,
+			instrument;
 
 		function init() {
 			build();
 			circleStyle = document.getElementById('circle').style;
 			$circle = $('#circle');
 			scope = $('.scope');
+			noteWidth = $('.scope > div').width();
+			$('#instruments input').on('change', function(e) {
+				instrument = $(e.target).attr('data-inst').toLocaleLowerCase();
+			});
+			$('#instruments input:eq(1)').trigger('click');
 		}
 
 		function build() {
 			var noteString = '';
 			Object.keys(NOTES).forEach(function(key, i, array) {
-				noteString += "<div data-freq='"  + NOTES[key] + "'>" + key + "</div>";
+				noteString += "<div data-midi='"  + NOTES[key] + "'>" + key + "</div>";
 			});
 			$('.scope').append(noteString);
 		}
@@ -56,8 +64,25 @@
 			}
 		}
 
+		function keyUp() {
+			var left = $circle.position().left;
+			if(left && left > 0 && left < scope.width()) {
+				note = $(".scope > div:eq(" + Math.floor(left/noteWidth) + ")");
+				Socket.send({
+					note: note.attr('data-midi'),
+					instrument: instrument 
+				});
+				note.addClass('on');
+			}			
+		}
+
+		function keyDown() {
+			note.removeClass('on');
+		}		
+
 		function clicked(data) {
-			console.log(data.type);
+			//keyDown = true and keyUp = false
+			(data.type ? keyUp() : keyDown()); 
 		}
 
 		function process(data) {
@@ -76,7 +101,7 @@
 		var socket;
 
 		function onopen() {
-			socket.send(63);
+
 		}
 
 		function onmessage(e) {
@@ -87,6 +112,10 @@
 
 		}	
 
+		function send(data) {
+			socket.send(JSON.stringify(data));
+		}			
+
 		function listen() {
 			socket = new WebSocket("ws://localhost:8080");
 			socket.onopen = onopen;
@@ -95,7 +124,8 @@
 		}					
 		
 		return {
-			listen: listen
+			listen: listen,
+			send: send
 		};
 	})();
 
