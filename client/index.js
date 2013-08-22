@@ -134,7 +134,6 @@
 	System = {
 		start: function() {
 			// var server = require('../server');
-			// server.boot();
 		}
 	};
 
